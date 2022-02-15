@@ -44,8 +44,66 @@
 * If you try to add more instances to the placement group later, or if you try to launch more than one instance type in the placement group, you increase your chances of getting an insufficient capacity error.
 * When you use Amazon Redshift Enhanced VPC Routing, Amazon Redshift forces all COPY and UNLOAD traffic between your cluster and your data repositories through your Amazon VPC.
 * If you need to sniff the actual network packets of a EC2 application, the ideal approach would be to use a network monitoring tool provided by an AWS partner. 
-* You have an on-premise application that needs access to the Simple Storage Service. Some of the key requirements are high bandwidth for the connection, low jitter and high availability. For that you should use AWS Direct Connect with public VIF.
+* You have an on-premise application that needs access to the S3. Some of the key requirements are high bandwidth for the connection, low jitter and high availability. For that you should use AWS Direct Connect with public VIF.
 * Make use of VPC peering and Consider a Hub and Spoke Model VPC Design if you want to host an Active Directory Domain server in a VPC. Resources in other VPCs will need to access the domain server for authentication and DNS routing.
 * You can attach 2 ENI’s to the Instance. One ENI can be used to accept Internet traffic and the other can be used to interact with your instances in the private subnet. 
 * All data transfer into AWS via the Internet is not charged.
 * AWS uses the most specific route in your route table that matches the traffic to determine how to route the traffic (longest prefix match).
+* You need to use a VPN IPSec tunnel for secure communication across the Internet between the regions.
+* The data transfer charges AWS Direct Connect data transfer Data transfer IN is $0.00 per GB in all locations. Data Transfer OUT pricing is dependent on the source AWS Region and AWS Direct Connect location.
+* Use the same Public VIF from your current AWS Direct connect connection to use AWS Direct connect between regions.
+* You can create a Direct Connect gateway in any region and use it to connect your AWS Direct Connect connection over a private virtual interface to VPCs in your account that are located in different regions. Alternatively, you can create a public virtual interface for your AWS Direct Connect connection and then establish a VPN connection to your VPC in the remote region.
+* What you need to use Connect Direct:
+  * ![alt text](https://i.ibb.co/XttsgzZ/image.png)
+* If your Lambda function requires Internet access (for example, to access AWS services that don't have VPC endpoints ), you can configure a NAT instance inside your VPC or you can use the Amazon VPC NAT gateway.
+* Enhanced networking uses single root I/O virtualization (SR-IOV) to provide high-performance networking capabilities on supported instance types. Enhanced networking provides higher bandwidth, higher packet per second (PPS) performance, and consistently lower inter-instance latencies. Also when it comes to setting the MTU , you can enable Jumbo frames by setting the MTU to 9001.
+* The maximum that is allowable in VPC peering is MTU 1500 For placement groups to work. 
+* the configuration for the Distribution in such a scenario Origin Protocol Policy Change the Origin Protocol Policy for the applicable origins in your distribution: HTTPS Only – CloudFront uses only HTTPS to communicate with your custom origin. Match Viewer – CloudFront communicates with your custom origin using HTTP or HTTPS, depending on the protocol of the viewer request. For example, if you choose Match Viewer for Origin Protocol Policy and the viewer uses HTTPS to request an object from CloudFront, CloudFront also uses HTTPS to forward the request to your origin.
+* VLAN ID and the Virtual Private gateway is part of the AWS Direct Connect connection creation process.
+* For RTMP distributions, you cannot configure CloudFront to forward query string parameters to your origin. 
+* When you create a workspace, you need to choose an existing User Directory.
+* After you have downloaded your Letter of Authorization and Connecting Facility Assignment (LOA-CFA), you need to complete your cross-network connection, also known as a cross connect. If you already have equipment located in an AWS Direct Connect location, contact the appropriate provider to complete the cross connect.
+* When troubleshooting AWS Direct Connect , one of the key issues is to ensure that the number of IP Prefixes summarised is below 100. Hence one of the steps would be to ensure that the routes are summarised into a default route.
+* AWS Inspector have the "Network Reachibility" rules package which help in running network port-scanning tools to test routing and firewall configurations and then validate what processes are listening on your instance network ports, before finally mapping the IPs identified in the port scan back to the host’s owner.
+* You can create a new DHCP options set and then provide the NTP server name as part of the options set if The EC2 Instances hosted in the VPC needs to get the time from a custom NTP server. 
+* When the instances are getting terminated by Autoscaling, the requests can be partially fulfilled and not completed. In such a case you can increase the connection draining on the ELB.
+* Do not routes advertise many routes on from On-premise in AWS Direct Connect.
+* You can resolve domain names in private hosted zones from your on-premises network by configuring a DNS forwarder. Setup a DNS forwarder in your VPC. Ensure the DNS forwarder points to the Amazon DNS resolver for the VPC. Also ensure the forwarder is configured with the on-premise DNS server. Change the Option Set for the VPC for the IP address of the DNS forwarder. Configure a DNS forwarder in the On-premise location.
+* You can provide secure communication between sites using the AWS VPN CloudHub.
+* For the Site office, you can use AWS Site-to-Site VPN. Since there is no mechanism currently for point to site connectivity for individual devices, you need to use a custom VPN server.
+* If the requirements are very specific you will need to use a custom VPN from the AWS Marketplace.
+* you can ensure that the CloudHSM modules are scaled along with the EC2 Instances for ensuring on time delivery of the SSL certificates by specifing the nmber of HDM modules in the cluster.
+* You have a requirement to host an application in the VPC which primarily communicates on IPv6. EnableIPv6 in VPC and subnets.
+* NAT Gateway Doesn't Respond to a Ping Command If you try to ping a NAT gateway's Elastic IP address or private IP address from the internet.
+* Support this Attaching multiple network interfaces to an instance is useful when you want to: 
+  * Create a management network. 
+  * Use network and security appliances in your VPC. 
+  * Create dual-homed instances with workloads/roles on distinct subnets. 
+  * Create a low-budget, high-availability solution. 
+* The Flow Logs will not include any of the following traffic: 
+  * Traffic to Amazon DNS servers, including queries for private hosted zones. 
+  * Windows license activation traffic for licenses provided by Amazon. 
+  * Requests for instance metadata. 
+  * DHCP requests or responses. 
+* To perform load testing that accurately assesses CloudFront performance, we recommend that you do all of the following: 
+  * Send client requests from multiple geographic regions. 
+  * Configure your test so each client makes an independent DNS request; each client will then receive a different set of IP addresses from DNS. 
+  * For each client that is making requests, spread your client requests across the set of IP addresses that are returned by DNS, which ensures that the load is distributed across multiple servers in a CloudFront edge location.
+* You can configure Amazon Route 53 to log information about the queries that Route 53 receives, such as the following: 
+  * The domain or subdomain that was requested 
+  * The date and time of the request 
+  * The DNS record type (such as A or AAAA) 
+  * The Route 53 edge location that responded to the DNS query 
+  * The DNS response code, such as NoError or ServFail
+* An endpoint service supports IPv4 traffic over TCP only.
+* Amazon GuardDuty is a managed threat detection service that continuously monitors for malicious or unauthorized behavior to help you protect your AWS accounts and workloads.
+* You can attach a network interface in one subnet to an instance in another subnet in the same VPC; however, both the network interface and the instance must reside in the same Availability Zone.
+* Hosted virtual interfaces (VIF) can connect to public resources or a VPC in the same way as standard VIFs, except that the account that owns the hosted VIF is different from the connection owner. Bandwidth is shared across all virtual interfaces on the parent connection. Hosted connections allow an APN partner to create a Direct Connect sub-1G connection for you, allocating dedicated bandwidth for that connection rather than having multiple VIFs on the same parent connection competing for bandwidth.
+* Currently Amazon VPC service doesn’t presently permit multicast or broadcast traffic. In the event that you have an application that uses multicast to function, you can leverage GRE tunnels to create a mesh VPN overlay network between your Amazon EC2 instances.
+* You need to disable Source/Dest checking on your EC2 instance to use VPN software on an EC2 Instance.
+* With One Virtual Private gateway Two AWS Direct Connect Locations Two Customer gateways you can achieve maximum fault tolerance , have maximum bandwidth at all times.
+* Setup a simple AD and make your on-premises severs points to the simple AD.
+* Multivalue answer routing lets you configure Amazon Route 53 to return multiple values, such as IP addresses for your web servers, in response to DNS queries. You can specify multiple values for almost any record.
+*  Jumbo frames allow more than 1500 bytes of data by increasing the payload size per packet, and thus increasing the percentage of the packet that is not packet overhead. Fewer packets are needed to send the same amount of usable data. However, outside of a given AWS region (EC2-Classic), a single VPC, or a VPC peering connection, you will experience a maximum path of 1500 MTU. VPN connections and traffic sent over an Internet gateway are limited to 1500 MTU. If packets are over 1500 bytes, they are fragmented, or they are dropped if the Don't Fragment flag is set in the IP header.
+* IPv6 addresses are globally unique, and are therefore public by default. If you want your instance to be able to access the Internet, but you want to prevent resources on the Internet from initiating communication with your instance, you can use an egress-only Internet gateway.
+*  
