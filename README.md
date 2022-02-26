@@ -143,7 +143,6 @@
 * When using Direct Connect to transport production workloads between AWS services, it's a best practice to create two connections through different data centers or providers. You have two options on how to configure your connections:
   * Active/Active – Traffic is load-shared between interfaces based on flow. If one connection becomes unavailable, all traffic is routed through the other connection.
   * Active/Passive – One connection handles traffic, and the other is on standby. If the active connection becomes unavailable, all traffic is routed through the passive connection.
-To configure an Active/Passive connection using a public ASN: 
 * Allow your customer gateway to advertise the same prefix (public IP or network that you own) with the same Border Gateway Protocol (BGP) attributes on both public virtual interfaces. This configuration permits you to load balance traffic over both public virtual interfaces.
 * Amazon VPC provides network routing flexibility. This includes the ability to create secure VPN tunnels between two or more software VPN appliances to connect multiple VPCs into a larger virtual private network so that instances in each VPC can seamlessly connect using private IP addresses. This option is recommended when you want to manage both ends of the VPN connection using your preferred VPN software provider.
 * Records without a health check are always considered healthy. If no record is healthy, all records are deemed to be healthy.
