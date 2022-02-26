@@ -40,7 +40,7 @@
   * Ensure DataCenter2 advertises less specific routes.
 * Enhanced Networking Enhanced networking uses single root I/O virtualization (SR-IOV) to provide high-performance networking capabilities on supported instance types. 
 * To connect to your WorkSpaces, the network that your Amazon WorkSpaces clients are connected to must have certain ports open to the IP address ranges for the various AWS services (grouped in subsets). These address ranges vary by AWS region. These same ports must also be open on any firewall running on the client.
-* You can use a VPN or a seconde Direct Connection as a backup for a primary DC.
+* You can use a VPN or a second Direct Connection as a backup for a primary DC.
 * If you try to add more instances to the placement group later, or if you try to launch more than one instance type in the placement group, you increase your chances of getting an insufficient capacity error.
 * When you use Amazon Redshift Enhanced VPC Routing, Amazon Redshift forces all COPY and UNLOAD traffic between your cluster and your data repositories through your Amazon VPC.
 * If you need to sniff the actual network packets of a EC2 application, the ideal approach would be to use a network monitoring tool provided by an AWS partner. 
