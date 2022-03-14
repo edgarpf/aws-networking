@@ -215,3 +215,27 @@ Once you configure query logging, Route 53 will send logs to CloudWatch Logs. Yo
 * A Gateway endpoint is a gateway that you specify in your route table to access Amazon S3 from your VPC over the AWS network. Gateway endpoint uses Amazon S3 public IP addresses and does not allow access from on-premises systems.
 * You can use two types of VPC endpoints to access Amazon S3: gateway endpoints and interface endpoints. A gateway endpoint is a gateway that you specify in your route table to access Amazon S3 from your VPC over the AWS network. Interface endpoints extend the functionality of gateway endpoints by using private IP addresses to route requests to Amazon S3 from within your VPC, on-premises, or from a VPC in another AWS Region using VPC peering or AWS Transit Gateway. Interface endpoints are compatible with gateway endpoints. If you have an existing gateway endpoint in the VPC, you can use both types of endpoints in the same VPC.
 * NAT Gateway is charged on an hourly basis and this charge will contribute to the total cost of NAT Gateway as aside with data processing.
+* You can use ALIAS in Route53 to route www.example.com and example.com to an ELB. CNAME records are not suppoter to example.com.
+* After you associate a new set of DHCP options with a VPC, any existing instances and all new instances that you launch in the VPC use these options. You don't need to restart or relaunch the instances. They automatically pick up the changes within a few hours, depending on how frequently the instance renews its DHCP lease.
+* Steps must be taken to order the cross-connect at the Direct Connect location:
+  * Obtain the LOA/CFA from the AWS Management Console when ordering the Direct Connect connection. 
+  * Provide it to the APN Partner when ordering connectivity. 
+  * The Direct Connect partner will ensure that the cross-connect is installed.
+* The public IPv4 address is displayed as a property of the network interface in the console, but it's mapped to the primary private IPv4 address through NAT. Therefore, if you inspect the properties of your network interface on your instance, for example, through ifconfig (Linux) or ipconfig (Windows), the public IPv4 address is not displayed. 
+* Configure the ELB protocols in TCP mode. Configure the application instances for SSL termination. Configure Amazon RDS for SSL, and use REQUIRE SSL grants. With that all data will be encrypted.
+* Create a outbound rule in a NACL TCP Port Range 1024-65535 to allow HTPP requests.
+* Configure CloudFront to use a custom header and configure an AWS WAF rule on the origin’s Application Load Balancer to accept only traffic that contains that header if you want to protect ALB from an attack.
+* Use multiple CloudHSM instances to the cluster. Then requests to it will automatically load balance.
+* Change the security policy on the ELB to disable vulnerable protocols and ciphers.
+* Use AWS CloudFormation custom resource using an AWS Lambda invocatio to use IPAM API to manage IPs. 
+* Amazon EC2 instances running in the organization’s VPC must be able to resolve the DNS names of on-premises systems. For that you can deploy and configure a set of EC2 instances into the company VPC to act as DNS proxies. Configure the proxies to forward queries for the on-premises domain to the on-premises DNS systems, and forward all other queries to the Amazon-provided DNS server (172.16.0.2). Change the DHCP options set for the VPC to use the new DNS proxies. Configure the on-premises DNS systems with a stub-zone, delegating the proxies as authoritative for the Route 53 private hosted zone.
+* Create a proxy resolver within the VPC. Point the on-premises forwarder to the proxy resolver. With that On-premises users will be able to resolve names in the private hosted zone, although instances in a peered VPC can.
+* Your organization has a newly installed 1-Gbps AWS Direct Connect connection. The minimum requirements for your router is 1-Gbps Single Mode Fiber Interface, 802.1Q VLAN, Peer IP Address, BGP Session with MD5.
+* EC2 instances must have IPv4 in addition to IPv6, so is the IPv4 range which has to be extended. As a subnet CDIR cannot be modified we need to create a new one, associate the new IPv4 an the existing IPv6, and add it to the group.
+* At least two subnets in different Availability Zones. To launch Amazon WorkSpaces and need to configure the appropriate networking resources.
+* Configure the CloudFront Cache Behavior to require HTTPS and the CloudFront Origin’s Protocol Policy to 'Match Viewer’ to increase security.
+* Use the inter-region capabilities of Direct Connect to establish a private virtual interface from Direct Connect location in one region to the new VPC in another region.
+* If you have a Direct connection you can create a new private virtual interface, and leverage the existing connection to connect to the partner VPC to send data from on-premise to this partner VPC.
+* Use a Route 53 public and private hosted zone for example.com and perform subdomain delegation for dev.example.com if the name server for subdomain “dev.example.com” should reside on-premises.
+* If tou have many private subdomains (sub.example.com) you can create a single Route 53 Private Hosted Zone for the zone sub.example.com and associate it with the three VPCs.
+* The Proxy Protocol v2 is an option in NLB which appends the source IP in the TCP packet header if the servers are in on-premise and ALB will not do source IP preservation.
