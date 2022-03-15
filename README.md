@@ -239,3 +239,20 @@ Once you configure query logging, Route 53 will send logs to CloudWatch Logs. Yo
 * Use a Route 53 public and private hosted zone for example.com and perform subdomain delegation for dev.example.com if the name server for subdomain “dev.example.com” should reside on-premises.
 * If tou have many private subdomains (sub.example.com) you can create a single Route 53 Private Hosted Zone for the zone sub.example.com and associate it with the three VPCs.
 * The Proxy Protocol v2 is an option in NLB which appends the source IP in the TCP packet header if the servers are in on-premise and ALB will not do source IP preservation.
+* The NAT gateway does not support fragmented packets.
+* BGP advertised routes per route table (propagated routes) is 100. This quota cannot be increased. If you require more than 100 prefixes, advertise a default route.
+* If you advertise more than 100 routes over the BGP session, the BGP session will go into an idle state with the BGP session DOWN.
+* The maximum S2S VPN per region is 50. 
+* Use an Amazon EC2 instance VPN for the desktop, mobile, and partner VPN connections. Use features of the VPN instance to limit routing and connectivity.
+* If you configure a proxy on an Amazon EC2 instance launched with an attached IAM role, ensure that you exempt the address used to access the instance metadata. To do this, set the NO_PROXY environment variable to the IP address of the instance metadata service, 169.254.169.254. This address does not vary.
+* Once Amazon allocates a network range for your DX, that becomes your range and Amazon will not re-advertise your range to other customers. However all Amazon owned addresses can reach you. 
+* To find out available CIDR ranges, a custom logic is required.
+* A company has two redundant AWS Direct Connect connections to a VPC. The VPC is configured using BGP metrics so that one Direct Connect connection is used as the primary traffic path. The company wants the primary Direct Connect connection to fail to the secondary in less than one second. For that enable Bidirectional Forwarding Detection (BFD) on the company’s router with a detection minimum interval of 300 ms and a BFD liveness detection multiplier of 3.
+* Create a CloudWatch metric that checks the status of the EC2 StatusCheckFailed metric, add an alarm to the metric, and then create a health check that is based on the state of the alarm. This will configure health checks for record sets within the zone that are associated with instances using private hosted zone using Amazon Route 53.
+* If traffic failed to switch over to the backup VPN connection confirm that the same routes are being advertised over both the VPN and Direct Connect.
+* If the domain name received via DHCP should be different for a particular set of instances that are currently in one particular subnet create a new peered VPC, configure the DHCP option set with the different domain name, and re-launch the required instances there.
+* If the origin does not support the ciphers or protocols in the SSL/TLS exchange with CloudFront it can generate HTTP 502 (Bad Gateway).
+* When you configure Amazon SQS to send messages from Amazon VPC, you must enable private DNS and specify endpoints in the format sqs.us-east-2.amazonaws.com.
+* You have 4 VPCs.You need to set up AWS Direct Connect to enable data flow from on-premises to each VPC with minimun cost. Create a total of four private VIFs, and enable VPC peering between all VPCs.
+* If the origin server returns an expired certificate, an invalid certificate, or a self-signed certificate, or if the origin server returns the certificate chain in the wrong order, CloudFront drops the TCP connection, returns HTTP status code 502 (Bad Gateway), and sets the X-Cache header to Error from cloudfront.
+* In workspace yo can receive "An error occurred while launching your WorkSpace. Please try again." update the company's corporate firewall to allow outbound access to UDP on port 4172 and TCP on port 4172. Open inbound ephemeral ports explicitly to allow return communication.
