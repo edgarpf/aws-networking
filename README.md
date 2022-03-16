@@ -256,3 +256,26 @@ Once you configure query logging, Route 53 will send logs to CloudWatch Logs. Yo
 * You have 4 VPCs.You need to set up AWS Direct Connect to enable data flow from on-premises to each VPC with minimun cost. Create a total of four private VIFs, and enable VPC peering between all VPCs.
 * If the origin server returns an expired certificate, an invalid certificate, or a self-signed certificate, or if the origin server returns the certificate chain in the wrong order, CloudFront drops the TCP connection, returns HTTP status code 502 (Bad Gateway), and sets the X-Cache header to Error from cloudfront.
 * In workspace yo can receive "An error occurred while launching your WorkSpace. Please try again." update the company's corporate firewall to allow outbound access to UDP on port 4172 and TCP on port 4172. Open inbound ephemeral ports explicitly to allow return communication.
+* Remember that if questions states that certain URL needs to be whitelisted, then custom proxy server is always needed.
+* Whenever you have a second DX connection at same location, AWS will provide a different router.
+* You can use host condition to redirect requests to example.com and sub.example.com for example.
+* IP protocol50 and UDP port 500 must be released on your Firewall to AWS VPN Connections.
+* Your company maintains an Amazon Route 53 private hosted zone. DNS resolution is restricted to a single, pre-existing VPC. For a new application deployment, you create an additional VPC in the same AWS account. To enable DNS resolution both within the new VPC and from the on-premises infrastructure 
+  * Launch Amazon EC2-based DNS proxies in the new VPC. Specify the proxies as forwarders in the on-premises DNS 
+  * Update the Route 53 private hosted zone’s VPC associations to include the new VPC. 
+* An organization will be extending its existing on-premises infrastructure into the cloud. The design consists of a transit VPC that contains stateful firewalls that will be deployed in a highly available configuration across two Availability Zones for automatic failover. You will need BGP and AS prepending.
+* You can enable MTU of 9001 on OS to increase network performance of a application.
+* Select instance with support for single root I/O virtualization and ensure that propers OS drivers are installed to reduce latency.
+* You may need to configure on-premise router to reach AWS.
+* 169.254.169.253 is a valid IP in a CIDR range.
+* Enable Dead Peer Connection or send ICMP request to VPC each 5 seconds to avoid dead connections.
+* If EC2 instances in your VPC are unable to resolve on-premises resources check NACL UDP and TCP 53 port outbound.
+* You have two VPCs that require DNS resolution from your on-premises data center and you want to have a DNS server in the cloud, but you don't want to have multiple DNS servers.
+  * Peer the VPCs and set up route between them.
+  * Configure DHCP route options sets in both VPC to point to the DNS server.
+* When configuring Active/Passive HA on VPN tunnels keep both tunnels up and configure MED on one of the tunnels.
+* Traffic flow creator can reduce latency.
+* Hosted AD can minimize traffic.
+* Virtual Private Gateway and Customer Gateway are always required for VPN.
+* Use MED or AS_PATH prepeding to influence the direction of Dynamic VPN traffic over multiple link.
+* To run VPN over DX, you need to have a public VIF to access the VPN endpoints. This will be encrypted.
