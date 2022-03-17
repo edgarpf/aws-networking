@@ -279,3 +279,28 @@ Once you configure query logging, Route 53 will send logs to CloudWatch Logs. Yo
 * Virtual Private Gateway and Customer Gateway are always required for VPN.
 * Use MED or AS_PATH prepeding to influence the direction of Dynamic VPN traffic over multiple link.
 * To run VPN over DX, you need to have a public VIF to access the VPN endpoints. This will be encrypted.
+* When the user data is more random and not generated at regular intervals, there can be a period which has no associated data. The user can either publish the zero (0) value for that period or not publish the data at all. It is recommended that the user should publish zero instead of no value to monitor the health of the application.
+* Instances cannot change subnets, so a new instance must be created.
+* Simple AD is not a full Active Directory server and will not work with many MS products.
+* You cannot send a broadcast in an AWS VPC, but the address is still reserved.
+* You have a hybrid infrastructure, and you need AWS resources to be able to resolve your on-premises DNS names. You have configured a DNS server on an EC2 instance. For that you need to configure the DHCP option set in the VPC to point to the EC2 DNS server.
+* The Intel interface has a max speed of 10 Gbps and the ENA is upto 100 Gbps. The speed will be the lesser of the two.
+* If your network utilizes jumbo frames on its servers and your router. You are trying to access your AWS resources, and you are having issues with packet loss. To solve that you can remove the "Do not Fragment" flag on the packets.
+* In the APi create a Reusable Delegation Set if you have a domain using another registrar and wants to use the same nameservers as your current domain hosted with AWS.
+* A Customer Gateway would allow you to add a new datacenter to your VPN.
+* Your company has two DX locations. You need to configure one link as passive. For that you can configure AS_PATH Prepending on the link 
+* Sub-1G service is only available through AWS partners.
+* The DDoS isn't a TCP attack.
+* You can only have 1 instance of any VLAN ID.
+* You need your data center to be able to resolve Route 53 queries in your private hosted zone. If your VPC has a CIDR 10.1.0.0/16 configure your DNS server to forward queries for the private hosted zone to 10.1.0.2.
+* To acquire best transmission rates inside AWS, Jumbo frame should be used, so MTU is better to be set at 9001. For traffic towards the internet, the AWS, MTU 1500 should be selected for best compatibility.
+* The DX Gateway will allow access to multiple regions.
+* The Differentiated Services Code Point value, or DSCP, is used to label packets on QoS enabled networks for prioritization.
+* /56 is the IPv6 subnet CIDR used by a VPC.
+
+
+
+
+
+
+
