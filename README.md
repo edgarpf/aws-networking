@@ -297,8 +297,18 @@ Once you configure query logging, Route 53 will send logs to CloudWatch Logs. Yo
 * The DX Gateway will allow access to multiple regions.
 * The Differentiated Services Code Point value, or DSCP, is used to label packets on QoS enabled networks for prioritization.
 * /56 is the IPv6 subnet CIDR used by a VPC.
-
-
+* When configuring redundant connections with the AWS Direct Connect, and to provide for failover, we recommend that you request and configure two dedicated connections to the AWS. There are different configuration choices available when you provision two dedicated connections. You can either use Active/  Active (BGP multipath) connection or Active/Passive (failover) connection to configure the two dedicated connections.
+* BGP MED is used to steer traffic and not for requesting a VIF.
+* The path selection process always chooses the most specific prefix first.
+* All links must be the same speed for a LAG to be operational.
+* You must complete a LOA for each new physical connection.
+* Amazon VPC does not support multicast nor broadcast.
+* Any data transfer out of a remote region is billed at the remote region data transfer rate.
+* The higher CIDR or more specific route will always take precedence.
+* o use the AWS Direct Connect, after you have created a virtual interface for your AWS Direct Connect connection, you can download the router configuration file. This configuration helps your router connect to AWS Direct Connect router. This configuration is related to your created virtual interface details and vendor, platform, and software of your router.
+* You get 2 tunnels with each VPN connection hosted by AWS.
+* Allow ISAKMP (UDP port 500) and Encapsulating Security Payload (IP protocol 50) traffic to route between your network and VPN endpoints. If you're using Network Address Translation Traversal (NAT-T), also be sure to allow UDP port 4500.
+* An ELB Classic Load Balancer cannot validate a client side certificate, so it must be passed through as standard TCP on port 443 to let the EC2 instance handle the validation.
 
 
 
