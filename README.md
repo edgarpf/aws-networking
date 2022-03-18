@@ -309,8 +309,16 @@ Once you configure query logging, Route 53 will send logs to CloudWatch Logs. Yo
 * You get 2 tunnels with each VPN connection hosted by AWS.
 * Allow ISAKMP (UDP port 500) and Encapsulating Security Payload (IP protocol 50) traffic to route between your network and VPN endpoints. If you're using Network Address Translation Traversal (NAT-T), also be sure to allow UDP port 4500.
 * An ELB Classic Load Balancer cannot validate a client side certificate, so it must be passed through as standard TCP on port 443 to let the EC2 instance handle the validation.
-
-
-
+* By default, a VPN has two tunnels for high availability.
+* The clear requirements for setting up LAG are given in the AWS Documentation. The following rules apply:
+  * All connections in the LAG must use the same bandwidth. The following bandwidths are supported: 1 Gbps and 10 Gbps.
+  * You can have a maximum of 4 connections in a LAG. Each connection in the LAG counts towards your overall connection limit for the region.
+  * All connections in the LAG must terminate at the same AWS Direct Connect endpoint.
+* AWS recommends enabling BFD when configuring multiple AWS Direct Connect connections or when configuring a single AWS Direct Connect connection and a VPN connection as a backup to ensure fast detection and failover.
+* Change the MTU setting on the network interface for each instance if you want to ensure that a minimal number of packets can be sent across the network interfaces.
+* Jumbo frames allow more than 1500 bytes of data by increasing the payload size per packet, thus increasing the packet's percentage that is not packet overhead. Fewer packets are needed to send the same amount of usable data.
+* Since transitive peering is not allowed, you can use a proxy instance to forward the requests.
+* DPDK is the Data Plane Development Kit that consists of libraries to accelerate packet processing workloads running on a wide variety of CPU architectures.
+* 
 
 
