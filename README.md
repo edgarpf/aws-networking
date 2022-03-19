@@ -319,6 +319,66 @@ Once you configure query logging, Route 53 will send logs to CloudWatch Logs. Yo
 * Jumbo frames allow more than 1500 bytes of data by increasing the payload size per packet, thus increasing the packet's percentage that is not packet overhead. Fewer packets are needed to send the same amount of usable data.
 * Since transitive peering is not allowed, you can use a proxy instance to forward the requests.
 * DPDK is the Data Plane Development Kit that consists of libraries to accelerate packet processing workloads running on a wide variety of CPU architectures.
-* 
-
-
+* If you get an InsufficientInstanceCapacity error when you try to launch an instance or restart a stopped instance, AWS does not currently have enough available On-Demand capacity to service your request.
+* You can’t configure two different IAM permissions for a single hosted zone. You must provide two separate hosted zones in order to attach a unique IAM Permission for each zone.
+* Configure the Elastic Beanstalk environment’s EC2 instances to terminate the SSL/TLS connection for RDS. Modify the load balancer to use TCP and set the RDS to accept only SSL connections by using the GRANT command with the REQUIRE SSL option.
+* Set up an Alias A Record for tutorialsdojo.com with the ALB as the target. For the www.tutorialsdojo.com subdomain, create a CNAME record that points to the ALB.
+* To create a public virtual interface, you must supply the following:
+  * For Virtual interface name, enter a name for the virtual interface.
+  * For Connection, choose the Direct Connect connection that you want to use for the interface.
+  * For VLAN, enter the ID number for your virtual local area network (VLAN).
+  * For BGP ASN, enter the Border Gateway Protocol Autonomous System Number of your on-premises peer router for the new virtual interface. The valid values are 1-2147483647.
+  * For the ‘Prefixes you want to advertise’ field, enter the IPv4 CIDR destination addresses (separated by commas) to which traffic should be routed over the virtual interface.
+* For HTTP Only, CloudFront solely uses HTTP to access the origin. For HTTPS Only, CloudFront uses only HTTPS to access the origin and for Match Viewer, CloudFront communicates with your origin using HTTP or HTTPS, depending on the protocol of the viewer request. CloudFront caches the object only once even if viewers make requests using both HTTP and HTTPS protocols.
+* When you use AWS Direct Connect to transport production workloads to and from AWS services, it’s a best practice to create two DX connections through different data centers or providers. You have two options on how to configure your connections:
+  * Active/Active – Traffic is load-shared between interfaces based on flow. If one connection becomes unavailable, all traffic is routed through the other connection.
+  * Active/Passive – One connection handles traffic, and the other is on standby. If the active connection becomes unavailable, all traffic is routed through the passive connection.
+* After you create a set of DHCP options, you can’t modify them. If you want your VPC to use a different set of DHCP options, you must create a new set and associate them with your VPC. You can also set up your VPC to use no DHCP options at all. After you associate a new set of DHCP options with the VPC, any existing instances and all new instances that you launch in that VPC use the new options. You don’t need to restart or relaunch the instances. They automatically pick up the changes within a few hours, depending on how frequently the instance renews its DHCP lease. If you want, you can explicitly renew the lease using the operating system on the instance.
+* To use your AWS Direct Connect connection with another AWS account, you can create a hosted virtual interface for that account. The owner of the other account must accept the hosted virtual interface to begin using it. A hosted virtual interface works the same as a standard virtual interface and can connect to public resources or a VPC. You can create a hosted virtual interface for accounts within your AWS Organizations, or AWS Organizations that are different from yours. You must accept the virtual interface before you can use it.
+* AWS CloudHSM provides hardware security modules (HSMs) in a cluster. A cluster is a collection of individual HSMs that AWS CloudHSM keeps in sync. You can think of a cluster as one logical HSM. When you perform a task or operation on one HSM in a cluster, the other HSMs in that cluster are automatically kept up to date. When you create the HSMs in different AWS Availability Zones, you automatically get high availability.
+* Limiting outbound traffic to certain trusted domains (called “whitelisting”) you help prevent instances from downloading malware, communicating with bot networks, or attacking internet hosts. You can use Squid, a leading open-source proxy, to implement a transparent proxy that can restrict both HTTP and HTTPS outbound traffic to a given set of Internet domains, while being fully transparent for instances in the private subnet.
+* The following are the things you have to consider when establishing an Active/Passive connection:
+If you’re using a public ASN:
+  * Confirm that your customer gateway is advertising the same prefix (public IP or network that you own) on both Border Gateway Protocol (BGP) sessions.
+  * You can use the BGP AS_Path attribute such that the prefixes advertised from the secondary connection are prepended with the customer gateway ASN twice. For example, if your customer gateway uses ASN 123, it can advertise the prefix on the secondary connection with AS_Path set to 123 123.
+  * You can use the BGP Local Preference attribute such that the customer gateway accepts routes from the primary connection as 200 and the secondary connection as 100. A higher Local Preference value is preferred, and the default is 100.
+  * The primary connection is considered the primary path. In the event of a failure, traffic is shifted to the secondary connection as a secondary path.
+If you’re using a private ASN:
+  * Confirm that your customer gateway is advertising the longer prefix on your primary connection. For example, if you’re advertising prefix X.X.X.0/24, then your customer gateway can advertise two prefixes (X.X.X.0/25 and X.X.X.128/25) on your primary connection and prefix X.X.X.0/24 on your secondary connection.
+  * If both interfaces are in the UP state, and the longer prefix is advertised on your primary connection, then traffic is sent to your customer gateway through the primary connection. In the event of a failure, traffic is shifted and sent to the secondary connection.
+* If you use custom DNS domain names defined in a private hosted zone in Amazon Route 53, the enableDnsHostnames and enableDnsSupport attributes must be set to true.
+* If you are only using a single AWS Direct Connect location, you have to create another Direct Connect connection to another AWS Direct Connect location to improve the connection resiliency.
+* Equal-cost multi-path routing (ECMP) is available with AWS Site-to-Site VPN on AWS Transit Gateway to help increase the traffic bandwidth over multiple paths. You can use ECMP to get higher VPN bandwidth, than the default VPN bandwidth limit of 1.25 Gbps,  by aggregating multiple VPN connections.
+* Network Load Balancers use Proxy Protocol version 2 to send additional connection information such as the source and destination.
+* If the physical connection is down, or there is no connectivity between the BGP peers. You have to check and verify the configuration on your Direct Connect router by doing the following steps:
+  * The IP addresses of the local and remote BGP peers, local and remote BGP Autonomous System Numbers (ASN), and the BGP MD5 password must be configured with the downloaded Direct Connect configuration file from the AWS Direct Connect console.
+  * Verify that the Direct Connect router or any other device is not blocking ingress or egress from TCP port 179 and other appropriate ephemeral ports.
+  * BGP peers can’t be more than one hop away from each other, because external BGP (EBGP) Multi-hop is disabled on the AWS end.
+* Amazon RDS supports using Transparent Data Encryption (TDE) to encrypt stored data on your DB instances running Microsoft SQL Server. 
+* When a virtual private gateway receives routing information, it uses path selection to determine how to route traffic. Longest prefix match is also used for the path selection. If the prefixes are the same, then the virtual private gateway prioritizes routes as follows, from MOST preferred to LEAST preferred:
+  * BGP propagated routes from an AWS Direct Connect connection
+  * Manually added static routes for a Site-to-Site VPN connection
+  * BGP propagated routes from a Site-to-Site VPN connection
+  * For matching prefixes where each Site-to-Site VPN connection uses BGP, the AS PATH is compared and the prefix with the shortest AS PATH is preferred. Alternatively, you can prepend AS_PATH, so that the path is less preferred.
+  * When the AS PATHs are the same length and if the first AS in the AS_SEQUENCE is the same across multiple paths, multi-exit discriminators (MEDs) are compared. The path with the lowest MED value is preferred.
+* If your AWS Direct Connect physical connection is up but your virtual interface is down, use the following steps to troubleshoot the issue.
+  * If you cannot ping the Amazon peer IP address, verify that your peer IP address is configured correctly and in the correct VLAN. Ensure that the IP address is configured in the VLAN subinterface and not the physical interface (for example, GigabitEthernet0/0.123 instead of GigabitEthernet0/0).
+  * Verify if the router has a MAC address entry from the AWS endpoint in your address resolution protocol (ARP) table.
+  * Ensure that any intermediate devices between endpoints have VLAN trunking enabled for your 802.1Q VLAN tag. ARP cannot be established on the AWS side until AWS receives tagged traffic.
+ * Clear your or your provider’s ARP table cache.
+* A link aggregation group (LAG) is a logical interface that uses the Link Aggregation Control Protocol (LACP) to aggregate multiple connections at a single AWS Direct Connect endpoint, allowing you to treat them as a single, managed connection. You can create a LAG from existing connections, or you can provision new connections. After you’ve created the LAG, you can associate existing connections (whether standalone or part of another LAG) with the LAG.
+* You can protect your domain from DNS spoofing or a man-in-the-middle attack, by configuring Domain Name System Security Extensions (DNSSEC), a protocol for securing DNS traffic.
+* With a public virtual interface, you can:
+  * Connect to all AWS public IP addresses globally.
+  * Create public virtual interfaces in any DX location to receive Amazon’s global IP routes.
+  * Access publicly routable Amazon services in any AWS Region (except the AWS China Region).
+* The following are some of the tunnel options that you can configure for your VPN connection:
+  * Dead peer detection (DPD) timeout – The duration after which DPD timeout occurs. You can specify 30 or higher
+  * IKE versions – The IKE versions that are permitted for the VPN tunnel. You can specify one or more of the default values.
+  * Inside tunnel CIDR – The range of inside IP addresses for the VPN tunnel. You can specify a size /30 CIDR block from the 169.254.0.0/16 range. The CIDR block must be unique across all Site-to-Site VPN connections that use the same virtual private gateway.
+  * Phase 1 Diffie-Hellman (DH) group numbers – The DH group numbers that are permitted for the VPN tunnel for phase 1 of the IKE negotiations. You can specify one or more of the default values.
+  * Pre-shared key (PSK) – The pre-shared key (PSK) to establish the initial internet key exchange (IKE) security association between the virtual private gateway and customer gateway.
+  * Phase 2 Diffie-Hellman (DH) group numbers – The DH group numbers that are permitted for the VPN tunnel for phase 2 of the IKE negotiations. You can specify one or more of the default values.
+* You can use a web server variable (e.g. REMOTE_ADDR) to get the IP addresses of the users who are visiting your website
+* If your web server is connected to the Internet through a load balancer, a web server variable might contain the IP address of the load balancer, not the IP address of the user.
+* The last IP address in the X-Forwarded-For HTTP header is most likely associated with the user’s geographic location. This header typically contains more than one IP address, most of which are for proxies or load balancers.
