@@ -154,10 +154,6 @@
 * NAT gateways managed by AWS don't accept traffic initiated from the internet. However, if inbound internet traffic is permitted by your security group or Network ACLs then it appears as accepted.
 * Only Application Load Balancer (ALB) supports Local Zone.
 * You cannot use a Lambda function as a target when using Local Zone subnets for configuring the ELB.
-* When a virtual private gateway receives routing information, it uses path selection to determine how to route traffic. The longest prefix match applies. If the prefixes are the same, then the virtual private gateway prioritizes routes as follows, from the most preferred to the least preferred:
-  * BGP propagated routes from an AWS Direct Connect connection 
-  * Manually added static routes for a Site-to-Site VPN connection
-  * BGP propagated routes from a Site-to-Site VPN connection.
 * AWS advertises appropriate Amazon prefixes to you so that you can reach either your VPCs or other AWS services. You can access all AWS prefixes through this connection; for example, Amazon EC2, Amazon S3, and Amazon.com. You do not have access to non-Amazon prefixes. AWS recommends that you use a firewall filter (based on the source/destination address of packets) to control traffic to and from some prefixes. If you're using a prefix filter (route map), ensure that it accepts prefixes with an exact match or longer. Prefixes advertised from AWS Direct Connect may be aggregated and may differ from the prefixes defined in your prefix filter.
 * AWS Direct Connect is a networking service that provides an alternative to using the internet to connect to AWS. Using Direct Connect, data that would have previously been transported over the internet is delivered through a private network connection between your facilities and AW.
 * AWS Direct Connect (DX) provides three types of virtual interfaces - public, private, and transit.
@@ -382,3 +378,39 @@ If you’re using a private ASN:
 * You can use a web server variable (e.g. REMOTE_ADDR) to get the IP addresses of the users who are visiting your website
 * If your web server is connected to the Internet through a load balancer, a web server variable might contain the IP address of the load balancer, not the IP address of the user.
 * The last IP address in the X-Forwarded-For HTTP header is most likely associated with the user’s geographic location. This header typically contains more than one IP address, most of which are for proxies or load balancers.
+* When associating a VPC from an external AWS account, you have to be mindful of the following:
+  * If you want to associate multiple VPCs that you created with one account with a hosted zone that you created with a different account, you must submit one authorization request for each VPC.
+  * When you authorize the association, you must specify the hosted zone ID, so the private hosted zone must already exist.
+  * You can’t use the Route 53 console either to authorize the association of a VPC with a private hosted zone or to make the association.
+* The communities 7224:1 – 7224:65535 are reserved by AWS Direct Connect. AWS Direct Connect applies the following BGP communities to its advertised routes:
+  * 7224:8100—Routes that originate from the same AWS Region in which the AWS Direct Connect point of presence is associated.
+  * 7224:8200—Routes that originate from the same continent with which the AWS Direct Connect point of presence is associated.
+  * No tag—Global (all public AWS Regions).
+* The intrinsic function ***Fn::Cidr*** returns an array of CIDR address blocks. The number of CIDR blocks returned is dependent on the count parameter. This function has three parameters:
+  * ***ipBlock*** – The user-specified CIDR address block to be split into smaller CIDR blocks.
+  * ***count*** – The number of CIDRs to generate. Valid range is between 1 and 256.
+  * ***cidrBits*** – The number of subnet bits for the CIDR. For example, specifying a value “8” for this parameter will create a CIDR with a mask of “/24”.
+* To connect to your resources hosted in an Amazon VPC (using their private IP addresses) through a transit gateway, use a transit virtual interface. With a transit virtual interface, you can:
+  * Connect multiple VPCs in the same or different AWS account using DX.
+  * Associate up to three transit gateways in the same AWS Region when you use a transit virtual interface to connect to a DX gateway.
+  * Attach VPCs in the same AWS Region to the transit gateway. Then, access multiple VPCs in different AWS accounts in the same AWS Region using a transit virtual interface.
+* AWS Global Accelerator is a service that improves the availability and performance of your applications with local or global users. It provides static IP addresses that act as a fixed entry point to your application endpoints in a single or multiple AWS Regions, such as your Application Load Balancers, Network Load Balancers, or Amazon EC2 instances.
+* A prefix list is a set of one or more CIDR blocks. There are two types of prefix lists:
+  * ***AWS-managed prefix-list*** — Represents the IP address ranges for an AWS service. You can reference an AWS-managed prefix-list in your VPC security group rules and in subnet route table entries. For example, you can reference an AWS-managed prefix-list in an outbound VPC security group rule when connecting to an AWS service through a gateway VPC endpoint. You cannot create, modify, share, or delete an AWS-managed prefix list.
+  * ***Customer-managed prefix-list*** — A set of IPv4 or IPv6 CIDR blocks that you define and manage. You can reference the prefix-list in your VPC security group rules and in subnet route table entries. This enables you to manage the IP addresses that you frequently use for these resources in a single group, instead of repeatedly referencing the same IP addresses in each resource. You can share your prefix list with other AWS accounts, enabling those accounts to reference the prefix-list in their own resources.
+* You can bring part or all of your public IPv4 address range from your on-premises network to your AWS account. You continue to own the address range, but AWS advertises it on the Internet. After you bring the address range to AWS, it appears in your account as an address pool. You can create an Elastic IP address from your address pool and use it with your AWS resources, such as EC2 instances, NAT gateways, and Network Load Balancers. This is also called “Bring Your Own IP Addresses (BYOIP)”.
+To ensure that only you can bring your address range to your AWS account, you must authorize Amazon to advertise the address range and provide proof that you own the address range. A Route Origin Authorization (ROA) is a document that you can create through your Regional internet registry (RIR), such as the American Registry for Internet Numbers (ARIN) or Réseaux IP Européens Network Coordination Centre (RIPE). It contains the address range, the ASNs that are allowed to advertise the address range, and the expiration date.
+* The following local preference BGP community tags are supported:
+  * 7224:7100 — Low preference
+  * 7224:7200 — Medium preference
+  * 7224:7300 — High preference
+* The public address of an EC2 instance can't be fetched by using the ifconfig (Linux) or ipconfig (Windows) commands. You have to call the instance metadata service instead. 
+* An Elastic Fabric Adapter (EFA) is a network device that you can attach to your Amazon EC2 instance to accelerate High-Performance Computing (HPC) and machine learning applications. EFA enables you to achieve the application performance of an on-premises HPC cluster, with the scalability, flexibility, and elasticity provided by the AWS Cloud.
+* 169.254.169.123 is and IP address to use to properly configure the NTP settings.
+* You can disassociate a CIDR block that you’ve associated with your VPC; however, you cannot disassociate the CIDR block with which you originally created the VPC (the primary CIDR block).
+* RFC 1918 CIDR blocks are basically private IPv4 address ranges as shown as follows:
+  * 10.0.0.0       – 10.255.255.255 (10/8 prefix)
+  * 172.16.0.0    – 172.31.255.255 (172.16/12 prefix)
+  * 192.168.0.0  – 192.168.255.255 (192.168/16 prefix)
+If your primary CIDR block is publicly routable (non-RFC 1918), or if it is a CIDR block from the 100.64.0.0/10 range then you can only add publicly routable IPv4 CIDR blocks or a CIDR block from the 100.64.0.0/10 range. 
+* AWS Cloud Map extends the capabilities of the Route 53 Auto Naming APIs by providing a service registry for resources, such as IPs, URLs, and ARNs, and offering an API-based service discovery mechanism with a faster change propagation and the ability to use attributes to narrow down the set of discovered resources. Existing Route 53 Auto Naming resources are upgraded automatically to AWS Cloud Map.
